@@ -1,6 +1,6 @@
 <template>
   <div class="nav">
-    <h2>Projects</h2>
+    <h2>Todos</h2>
   </div>
   <router-view/>
 </template>
