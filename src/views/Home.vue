@@ -92,86 +92,45 @@ export default {
       axios
       .get(this.backend_url + 'todos/completed').then(response => {
           this.completed_todos = response.data.data
-          console.log(this.completed_todos)
       });  
+    },
+     getOngoingTodos(){ 
+      axios
+      .get(this.backend_url + 'todos/ongoing').then(response => {
+          this.ongoing_todos = response.data.data 
+      });  
+    },
+       toggleOngoing(theId){
+      todos.value.forEach((todo) => {
+        if(todo.id == theId){
+          todo.inProgress = !todo.inProgress
+        }
+      })
+    },
+     removeTodo(theId){
+      let idx = 1
+      todos.value = todos.value.filter((todo) => todo.id != theId)
+      todos.value.forEach((todo) => {
+        todo.id = idx;
+        idx++
+      })
+    },
+     updateTodos(stuff){
+      todos.value.push({content: stuff, inProgress: true, id: todos.value.length + 1})
+    },
+     changeContent(theId, newContent){
+      todos.value.forEach((todo) => {
+        if(todo.id == theId){
+          todo.content = newContent
+        }
+      })
     }
   },
-  // setup(){
-  //   //initial navigation
-  //   const view_all = ref(true)
-  //   const completed = ref(false)
-  //   const ongoing = ref(false)
-  //   const addit = ref(false)
-  //   function selectNav(num){
-  //     if(view_all.value && num != 1){
-  //       view_all.value = false;
-  //     }
-  //     if(completed.value && num != 2){
-  //       completed.value = false;
-  //     }
-  //     if(ongoing.value && num != 3){
-  //       ongoing.value = false;
-  //     }
-  //     if(addit.value && num != 4){
-  //       addit.value = false;
-  //     }
-  //     if(num == 1){
-  //       view_all.value = true;
-  //     }
-  //     else if(num == 2){
-  //       completed.value = true;
-  //     }
-  //     else if(num == 3){
-  //       ongoing.value = true;
-  //     }
-  //     else{
-  //       addit.value = true;
-  //     }
-  //   }
-  //   //main todo content
-  //   let todos = {};
-  //   // let todos = ref([
-  //   //   {content: "This is a Todo", inProgress: true, id: 1},
-  //   //   {content: "This is another Todo", inProgress: true, id: 2},
-  //   //   {content: "This is yet another Todo", inProgress: false, id: 3},
-  //   // ])
-  //   const Completed = computed(() => {
-  //     return todos.value.filter((todo) => todo.inProgress === false)
-  //   })
-  //   const Ongoing = computed(() => {
-  //     return todos.value.filter((todo) => todo.inProgress === true)
-  //   }) 
-   
-  //   function toggleOngoing(theId){
-  //     todos.value.forEach((todo) => {
-  //       if(todo.id == theId){
-  //         todo.inProgress = !todo.inProgress
-  //       }
-  //     })
-  //   }
-  //   function removeTodo(theId){
-  //     let idx = 1
-  //     todos.value = todos.value.filter((todo) => todo.id != theId)
-  //     todos.value.forEach((todo) => {
-  //       todo.id = idx;
-  //       idx++
-  //     })
-  //   }
-  //   function updateTodos(stuff){
-  //     todos.value.push({content: stuff, inProgress: true, id: todos.value.length + 1})
-  //   }
-  //   function changeContent(theId, newContent){
-  //     todos.value.forEach((todo) => {
-  //       if(todo.id == theId){
-  //         todo.content = newContent
-  //       }
-  //     })
-  //   }
-  //   return {view_all, completed, ongoing, addit, selectNav, todos, Completed, Ongoing, toggleOngoing, removeTodo, updateTodos, changeContent, getAllTodos}
-  // },
+ 
   mounted(){
       this.getAllTodos();  
       this.getCompletedTodos();
+      this.getOngoingTodos();
   }
 }
 </script>
