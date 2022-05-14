@@ -7,7 +7,7 @@
         <div class="todobg"/>
         <div class="todotext"> 
             Content:
-            <input type="text" class="todoinput" @keydown.enter="addNewTodo" v-model="content"/>
+            <input type="text" class="todoinput" @keydown.enter="addNewTodo" v-model="title"/>
         </div>
         <div class="controlButtons">
             <button class="controlButtonAdd" @click="addNewTodo">Add</button>
@@ -18,20 +18,40 @@
 
 <script>
 import { ref } from '@vue/reactivity'
+import axios from "axios";
+
 export default {
-    emits: ['addtodo'],
-    setup(props, { emit }){
-        const content = ref('')
-        function clearNewTodo(){
-            content.value = ''
+    // emits: ['addtodo'],
+    // setup(props, { emit }){
+    //     const content = ref('')
+    //     function clearNewTodo(){
+    //         content.value = ''
+    //     }
+    //     function addNewTodo(){
+    //         if(content.value.length > 0){
+    //             emit('addtodo', content.value)
+    //             content.value = ''
+    //         }
+    //     }
+    //     return {content, clearNewTodo, addNewTodo}
+    // }
+     data: () => ({
+        title: null,
+         backend_url : 'http://127.0.0.1:8000/api/v1/',
+     }),
+    methods : {
+        clearNewTodo(){
+            title = '';
+        },
+        addNewTodo(){ 
+            axios
+                .post(this.backend_url + 'todos', {title: this.title}).then(
+                    response => {
+                        console.log(response.data)
+                    }
+                );
+            this.title = '' 
         }
-        function addNewTodo(){
-            if(content.value.length > 0){
-                emit('addtodo', content.value)
-                content.value = ''
-            }
-        }
-        return {content, clearNewTodo, addNewTodo}
     }
 }
 </script>

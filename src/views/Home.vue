@@ -57,12 +57,15 @@ export default {
   methods: {
      selectNav(num){
       if(this.view_all && num != 1){
+       this.getCompletedTodos();
         this.view_all = false;
       }
       if(this.completed && num != 2){ 
+        this.getAllTodos();
         this.completed = false;
       }
       if(this.ongoing && num != 3){
+        this.getCompletedTodos();
         this.ongoing = false;
       }
       if(this.addit && num != 4){
